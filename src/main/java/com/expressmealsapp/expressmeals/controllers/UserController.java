@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -39,8 +40,11 @@ public class UserController {
                     user.setUsername(newUser.getUsername());
                     user.setPassword(newUser.getPassword());
                     user.setEmail(newUser.getEmail());
-                    user.setAddress(newUser.getEmail());
+                    user.setAddress(newUser.getAddress());
                     user.setSubscribed(newUser.getSubscribed());
+                    user.setSubscriptionType(newUser.getSubscriptionType());
+                    user.setVegan(newUser.getVegan());
+                    user.setVegetarian(newUser.getVegetarian());
                     return userRepository.save(user);
                 }).orElseThrow(()->new UserNotFoundException(id));
     }
