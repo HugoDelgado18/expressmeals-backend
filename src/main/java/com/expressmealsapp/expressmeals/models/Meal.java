@@ -1,5 +1,6 @@
 package com.expressmealsapp.expressmeals.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class Meal {
     private Boolean vegan;
     private Boolean vegetarian;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "meals", fetch = FetchType.LAZY)
     private Set<User> users;
 
@@ -40,8 +42,11 @@ public class Meal {
                 ", calories=" + calories +
                 ", serving_size=" + serving_size +
                 ", description='" + description + '\'' +
+                ", ingredients='" + ingredients + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", vegan=" + vegan +
                 ", vegetarian=" + vegetarian +
+                ", users=" + users +
                 '}';
     }
 }

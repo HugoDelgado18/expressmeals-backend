@@ -1,7 +1,9 @@
 package com.expressmealsapp.expressmeals.controllers;
 
 import com.expressmealsapp.expressmeals.exception.UserNotFoundException;
+import com.expressmealsapp.expressmeals.models.Meal;
 import com.expressmealsapp.expressmeals.models.User;
+import com.expressmealsapp.expressmeals.repository.MealRepository;
 import com.expressmealsapp.expressmeals.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private MealRepository mealRepository;
+
+
     @GetMapping("/user")
     List<User> getAllUsers(){
         return userRepository.findAll();
@@ -26,9 +32,27 @@ public class UserController {
             .orElseThrow(()->new UserNotFoundException(id));
     }
 
+
+
     @PostMapping("/user")
     User newUser(@RequestBody User newUser){
         return userRepository.save(newUser);
+    }
+
+    @PutMapping("/user/{userId}/meal/{mealId}")
+    User assignMeal(@PathVariable Long userId, @PathVariable Long mealId){
+        Meal meal = mealRepository.findById(mealId).get();
+        User user = userRepository.findById(userId).get();
+
+        user.addMeal(meal);
+        return userRepository.save(user);
+
+
+    }
+
+    @GetMapping("/user/username/{name}")
+    public List getUserByUsername(@PathVariable String name){
+        return userRepository.findByUsername(name);
     }
 
     @PutMapping("/user/{id}")
@@ -45,6 +69,8 @@ public class UserController {
                     user.setSubscriptionType(newUser.getSubscriptionType());
                     user.setVegan(newUser.getVegan());
                     user.setVegetarian(newUser.getVegetarian());
+                    user.setRecipesPerWeek(newUser.getRecipesPerWeek());
+                    user.setOrderTotal(newUser.getOrderTotal());
                     return userRepository.save(user);
                 }).orElseThrow(()->new UserNotFoundException(id));
     }

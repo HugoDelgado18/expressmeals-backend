@@ -35,6 +35,8 @@ public class User {
 
     private Boolean vegan = false;
     private Boolean vegetarian = false;
+    private Long recipesPerWeek;
+    private Double orderTotal = 0.00;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_MEAL_TABLE",
@@ -46,6 +48,11 @@ public class User {
     }
     )
     private Set<Meal> meals;
+
+    public void addMeal(Meal meal){
+        meals.add(meal);
+    }
+
 
     @Override
     public String toString() {
@@ -61,6 +68,8 @@ public class User {
                 ", subscriptionType='" + subscriptionType + '\'' +
                 ", vegan=" + vegan +
                 ", vegetarian=" + vegetarian +
+                ", recipesPerWeek=" + recipesPerWeek +
+                ", orderTotal=" + orderTotal +
                 ", meals=" + meals +
                 '}';
     }
